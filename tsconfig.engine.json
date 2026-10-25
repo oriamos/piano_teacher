@@ -7,6 +7,7 @@
   "include": [
     "src/config.ts",
     "src/engine/**/*.ts",
+    "src/content/**/*.ts",
     "src/midi/messages.ts",
     "src/midi/calibration.ts",
     "src/midi/select.ts",

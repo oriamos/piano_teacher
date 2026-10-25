@@ -24,7 +24,46 @@ export interface ExpectedNote {
   durBeats: number
   hand: Hand
   segmentId: string
+  /** Velocity from the source file, used for playback. */
+  velocity: number
 }
+
+/** A segment: a range of bars that is practised as one unit. */
+export interface Segment {
+  id: string
+  index: number
+  startBeat: number
+  endBeat: number
+  /** Ids of the segments this one was stitched from (stage 2). */
+  parentIds?: string[]
+}
+
+/** A song after import: the only shape the engine, render and store see. */
+export interface Song {
+  id: string
+  title: string
+  composer?: string
+  /** Original tempo. */
+  bpm: number
+  beatsPerBar: number
+  totalBeats: number
+  /** Notes sorted by onsetBeat, then pitch. */
+  notes: ExpectedNote[]
+  segments: Segment[]
+  hands: HandAssignment
+  tracks: TrackInfo[]
+}
+
+export interface TrackInfo {
+  index: number
+  name: string
+  noteCount: number
+  avgPitch: number
+}
+
+export type HandAssignment =
+  | { method: 'track'; rhTracks: number[]; lhTracks: number[] }
+  | { method: 'split'; splitPitch: number }
 
 /**
  * A note the user played. `t` is `performance.now()` minus the calibrated

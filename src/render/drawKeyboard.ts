@@ -39,6 +39,8 @@ export function drawKeyboard(
   pressed: ReadonlyMap<number, PressedKey>,
   theme: KeyboardTheme = darkKeyboardTheme,
   labelC = true,
+  /** Keys to outline as "play this next" (fade level 0): pitch → colour. */
+  targets: ReadonlyMap<number, string> = new Map(),
 ): void {
   const { width, height } = layout
   ctx.clearRect(0, 0, width, height)
@@ -65,6 +67,13 @@ export function drawKeyboard(
     const p = pressed.get(k.pitch)
     ctx.fillStyle = p ? tint(p.color ?? theme.pressed, p.velocity) : theme.black
     ctx.fillRect(k.x, k.y, k.w, k.h)
+  }
+  for (const [pitch, color] of targets) {
+    const k = layout.byPitch.get(pitch)
+    if (!k || pressed.has(pitch)) continue
+    ctx.strokeStyle = color
+    ctx.lineWidth = 3
+    ctx.strokeRect(k.x + 2, k.y + 2, k.w - 4, k.h - 4)
   }
 }
 

@@ -8,6 +8,18 @@ uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Stage 1 – basic player.** MIDI (.mid) import with hand assignment by track or by a
+  movable pitch split, fixed 4-bar segments, a song library in IndexedDB with three bundled
+  public-domain starter songs, and a practice screen with falling notes on a Canvas
+  keyboard. Modes: Listen (the piano or the synth plays the range), Wait (the cursor waits for
+  each chord; wrong notes are counted), Practice (fixed tempo 40–100 %, per-note
+  precise/early/late/wrong/missed feedback, run score). Hand selection with the other hand
+  played automatically, A–B loop by bars, metronome and one-bar count-in, fade levels 0–4,
+  a 3-second run summary with automatic repeat.
+- **No-piano mode.** On-screen and computer-keyboard input, a Web Audio synth as the sound
+  sink, and a Sound setting (auto / piano / synth / silent). See ADR 0005.
+- Pure engine modules with tests: chord grouping, wait matcher, timed matcher, run scoring,
+  beat/ms conversions, and the `PracticeSession` controller driven by a fake clock.
 - **Stage 0 – hardware validation.** Device-test screen: Web MIDI enumeration with automatic
   selection of the Casio port, hot-plug with a "piano disconnected" banner, an 88-key virtual
   keyboard that highlights pressed keys by velocity, an event log with per-event handling
@@ -24,5 +36,6 @@ uses [Semantic Versioning](https://semver.org/).
 
 ### Not yet
 
-- Stage 0 pass condition has **not** been verified on real hardware yet (waiting for a run on
-  the tablet + Casio).
+- Stage 0 and stage 1 pass conditions have **not** been verified on real hardware. Both
+  stages were exercised in headless Chromium in no-piano mode and with a mocked MIDI device.
+- MusicXML import, density-based segmentation and the piano gestures come with stage 2.

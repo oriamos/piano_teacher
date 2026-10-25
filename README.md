@@ -9,13 +9,20 @@ spaced-repetition schedule so you build a repertoire instead of forgetting last 
 It is built for a small, closed group of friends who had a few piano lessons as kids and want
 to actually finish songs now. Reading staff notation is explicitly **not** a goal.
 
-**Status: stage 0 of 5** – hardware validation. The device-test screen is done; it has not
-yet been verified on the real tablet and piano. See [Roadmap](#roadmap).
+**Status: stage 1 of 5** – basic player. Import a MIDI file, pick a hand and a bar range, and
+practise it in wait mode or at a fixed tempo with per-note feedback. Works with a MIDI piano
+**and without one** (on-screen or computer keyboard, synth on the tablet). Neither stage has
+been verified on the real tablet and piano yet. See [Roadmap](#roadmap).
 
-![Device test screen: virtual keyboard with highlighted keys, input/output checks, latency calibration, event log](docs/screenshots/device-test.png)
+![Practice screen in wait mode: falling notes coloured by hand, hit notes green, the next chord outlined, a wrong note counted](docs/screenshots/practice-wait-wrong.png)
 
-_The stage 0 device-test screen (mock piano). A GIF of the practice screen will land with
-stage 1._
+_Wait mode: hit notes turn green, the chord the cursor waits on is outlined, the key to play
+is outlined on the keyboard (fade level 0)._
+
+![Practice screen in timed mode with a missed note blinking red](docs/screenshots/practice-timed.png)
+
+_Practice mode at 60 % tempo, right hand only. A missed note blinks red; the left hand is
+played by the piano (or the synth)._
 
 ## How it teaches
 
@@ -58,8 +65,32 @@ npm install
 npm run dev          # http://localhost:5173  (also reachable on the LAN via --host)
 ```
 
-Open it in desktop Chrome or Edge to try the device-test screen; if no MIDI device is
-attached you can click the on-screen keyboard.
+Open it in desktop Chrome or Edge. Press **Add starter songs** in the library (three
+public-domain tunes ship with the app), open one and press **Start**.
+
+### Two modes: with a piano, without one
+
+| Mode         | Input                                                                                                                                        | Sound                                                |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Piano**    | The piano over USB-MIDI (auto-selected when its name contains "CASIO")                                                                       | The piano itself, incl. demonstrations over MIDI out |
+| **No piano** | Tap the on-screen keyboard, or type: `A W S E D F T G Y H U J K O L P ; '` = C4 upward, `Z`/`X` octave down/up, hold Shift for a louder note | A small synth on the tablet / laptop                 |
+
+Switching is automatic: when a MIDI output is connected the piano plays, otherwise the synth
+does. Settings lets you force either, or silence. Everything else (matching, feedback,
+scoring) is identical in both modes; see [ADR 0005](docs/adr/0005-no-piano-mode.md).
+
+### The practice screen
+
+- **Mode**: _Listen_ plays the range; _Wait_ stops at each chord until you play it (wrong
+  notes are counted, time is not); _Practice_ runs at a fixed tempo (40–100 %) and colours
+  each note green / blue / orange / red for precise / early / late / wrong, blinking red for
+  missed, with a score after the run.
+- **Hand**: left, right or both. The hand you are not playing is played for you.
+- **Bars**: an A–B loop by bar numbers. **Click** adds a metronome; timed runs start with a
+  one-bar count-in.
+- **Fade**: 0 shows notes and highlights the target keys, 1 notes only, 2 notes that vanish
+  halfway, 3 only the first note of each bar, 4 a blank screen (play from memory).
+- After each run a 3-second summary shows, then the next run starts by itself. Stop ends it.
 
 Useful scripts:
 
@@ -101,6 +132,8 @@ Then, on the tablet: Chrome → open the URL → allow MIDI when prompted → me
 If you unplug the cable mid-session, a banner appears and the app reconnects by itself when
 the piano is back.
 
+![Device test screen: virtual keyboard with highlighted keys, input/output checks, latency calibration, event log](docs/screenshots/device-test.png)
+
 ## Self-hosting (from stage 4)
 
 The practice engine runs entirely on the tablet; a backend is only needed for multi-user
@@ -122,13 +155,18 @@ login, the shared song library and progress sync. That backend is a
 ```
 src/
   config.ts   every numeric threshold (windows, percentages, α, EF) – nothing is hard-coded
-  midi/       Web MIDI: connection, hot-plug, timestamps, scheduled output, calibration
-  engine/     pure TypeScript, no DOM: matching, scoring, state machine, tempo, hotspots, SRS
-  content/    (stage 1) MIDI / MusicXML parsing, internal event format, segmentation, hands
-  render/     Canvas: virtual keyboard, falling notes, fading levels
-  ui/         React screens and controls
-  store/      (stage 1) Dexie / IndexedDB and the sync queue
+  midi/       Web MIDI: connection, hot-plug, timestamps, scheduled output, calibration,
+              computer-keyboard input, fixture recorder
+  audio/      the Instrument interface: piano over MIDI out, or the Web Audio synth
+  engine/     pure TypeScript, no DOM: grouping, wait/timed matching, scoring, the practice
+              session controller (stage 2 adds the stage machine, tempo, hotspots, SRS)
+  content/    MIDI parsing → internal event format, hand assignment, segmentation
+  render/     Canvas: virtual keyboard, falling notes, fade levels
+  ui/         React screens (library, practice, settings) and the browser adapter
+  store/      Dexie / IndexedDB: songs, settings (progress and the sync queue come later)
   sync/       (stage 4) Supabase
+scripts/      seed-songs.mjs regenerates the bundled public-domain starter songs
+public/songs/ the starter songs (.mid)
 docs/         architecture, algorithms, pedagogy, UI reference, ADRs
 test/fixtures real MIDI recordings (JSON) the engine is tested against
 ```

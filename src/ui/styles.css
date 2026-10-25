@@ -273,3 +273,213 @@ code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.9em;
 }
+
+/* ---------- navigation / library ---------- */
+a.button {
+  display: inline-grid;
+  place-items: center;
+  min-height: 56px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: var(--panel-2);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1rem;
+}
+.topbar a.button {
+  margin-left: auto;
+}
+.topbar .pill + a.button,
+.topbar a.button + .pill {
+  margin-left: 12px;
+}
+button.small,
+a.button.small {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 12px;
+  font-size: 0.9rem;
+}
+
+.song-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.song-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.song-main {
+  flex: 1;
+  cursor: pointer;
+  min-width: 0;
+}
+.song-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* ---------- practice screen ---------- */
+.practice {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.practice-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px 10px;
+  padding: 6px 10px;
+  background: var(--panel);
+}
+.practice-bar .song-name {
+  align-self: center;
+  margin-right: auto;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+.practice-bar .field {
+  font-size: 0.75rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.field input[type='range'] {
+  width: 96px;
+  min-height: 40px;
+}
+.check-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+}
+.check-field input {
+  width: 24px;
+  height: 24px;
+}
+.loop-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.loop-inputs input {
+  width: 56px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 1rem;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.seg button {
+  min-height: 48px;
+  min-width: 48px;
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid #333;
+  background: var(--panel-2);
+  padding: 0 10px;
+}
+.seg button:last-child {
+  border-right: 0;
+}
+.seg button.on {
+  background: var(--accent);
+  color: #06202a;
+  font-weight: 600;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.practice-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  background: #0b0d11;
+}
+.readout {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: rgba(15, 17, 21, 0.7);
+  padding: 4px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.readout .bad {
+  color: var(--bad);
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+  gap: 6px;
+}
+.overlay.countin {
+  font-size: 2rem;
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  align-content: start;
+  padding-top: 20%;
+}
+.summary-overlay {
+  background: rgba(15, 17, 21, 0.75);
+}
+.summary-overlay .big {
+  font-size: 4rem;
+  font-weight: 700;
+}
+.verdict {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.verdict.clean {
+  color: var(--good);
+}
+.verdict.failed {
+  color: var(--bad);
+}
+.verdict.neither {
+  color: var(--warn);
+}
+.practice-foot {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background: var(--panel);
+}

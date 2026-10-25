@@ -143,8 +143,42 @@ sync to the server. RLS on every user-owned table means a user never sees anothe
 | Backend       | Supabase: Auth, Postgres + RLS, Storage   | Free at this scale; RLS separates users                                          |
 | Hosting       | Vercel                                    | Static site                                                                      |
 
-## Current state (stage 0)
+## The practice loop (stage 1)
 
-Implemented: `src/midi` (all of it), `src/render/keyboardLayout.ts` and `drawKeyboard.ts`,
-`src/engine/types.ts`, `src/config.ts`, the device-test screen in `src/ui`. The latency offset
-is kept in `localStorage` until the Dexie store arrives in stage 1.
+`PracticeSession` (`src/engine/practice.ts`) is the controller for one run of one bar range in
+one mode. It is pure: it receives `now()`, `emit(event)`, `schedule(notes)` and
+`cancelScheduled()` from its caller and is driven by `noteOn` / `tick`. The browser adapter
+(`src/ui/player/usePractice.ts`) supplies the corrected clock, routes `schedule` to the current
+`Instrument`, feeds MIDI input in, and calls `tick` once per animation frame.
+
+```
+MIDI / screen / keys ──▶ MidiManager ──▶ PracticeSession.noteOn ──▶ Wait- or TimedMatcher
+                                             │                              │
+                       rAF ──▶ tick ◀────────┘          feedback / advance / runEnd events
+                                                                            │
+          Instrument (piano over MIDI out, or Synth) ◀── schedule ◀─────────┤
+          FrameState (feedback map, playhead, targets) ◀────────────────────┘
+                     │
+          PracticeCanvas: drawFallingNotes + drawKeyboard, every frame
+```
+
+Per-note feedback never goes through React state: the session writes into a plain
+`FrameState` object that the canvas reads on the next frame. React only re-renders for things
+that can wait (phase changes, the wrong-note counter, the run summary).
+
+## Two modes
+
+`src/ui/io.ts` decides where input comes from and where sound goes (ADR 0005). The engine
+does not know which mode is active. In piano mode `Instrument` is `MidiInstrument` (scheduled
+`MIDIOutput.send`); in no-piano mode it is `Synth` (Web Audio, scheduled on the audio clock),
+and input notes are echoed to the synth so the on-screen keyboard is audible.
+
+## Current state
+
+Implemented: `src/midi`, `src/audio`, `src/content` (MIDI import, hands, fixed 4-bar
+segments), `src/engine` (types, time, groups, wait/timed matchers, scoring, practice
+session), `src/render` (keyboard, falling notes with fade levels), `src/store` (songs,
+settings), `src/ui` (library, practice, settings with the device test). Not yet: MusicXML,
+density-based segmentation, the stage machine / adaptive tempo / hotspots / SRS / session
+builder (stage 2–3), progress tables, sync (stage 4). The latency offset still lives in
+`localStorage`; it moves to the settings table with the stage 2 store work.
