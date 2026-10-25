@@ -1,0 +1,26 @@
+{
+  "name": "synthetic-c-major-scale",
+  "description": "SYNTHETIC, not a real recording. One octave C major scale up at 80 BPM with two deliberate mistakes: the E (pitch 64) is played 40 ms late, and an extra wrong note (pitch 66, F#) is struck between F and G. Replace with a real piano recording once stage 0 passes.",
+  "source": "synthetic",
+  "bpm": 80,
+  "events": [
+    { "t": 0, "type": "on", "n": 60, "v": 90 },
+    { "t": 600, "type": "off", "n": 60, "v": 0 },
+    { "t": 750, "type": "on", "n": 62, "v": 88 },
+    { "t": 1350, "type": "off", "n": 62, "v": 0 },
+    { "t": 1540, "type": "on", "n": 64, "v": 85 },
+    { "t": 2100, "type": "off", "n": 64, "v": 0 },
+    { "t": 2250, "type": "on", "n": 65, "v": 92 },
+    { "t": 2600, "type": "on", "n": 66, "v": 60 },
+    { "t": 2700, "type": "off", "n": 66, "v": 0 },
+    { "t": 2850, "type": "off", "n": 65, "v": 0 },
+    { "t": 3000, "type": "on", "n": 67, "v": 90 },
+    { "t": 3600, "type": "off", "n": 67, "v": 0 },
+    { "t": 3750, "type": "on", "n": 69, "v": 87 },
+    { "t": 4350, "type": "off", "n": 69, "v": 0 },
+    { "t": 4500, "type": "on", "n": 71, "v": 89 },
+    { "t": 5100, "type": "off", "n": 71, "v": 0 },
+    { "t": 5250, "type": "on", "n": 72, "v": 95 },
+    { "t": 6000, "type": "off", "n": 72, "v": 0 }
+  ]
+}

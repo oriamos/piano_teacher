@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": [
+    "src/config.ts",
+    "src/engine/**/*.ts",
+    "src/midi/messages.ts",
+    "src/midi/calibration.ts",
+    "src/midi/select.ts",
+    "src/midi/recorder.ts",
+    "src/render/keyboardLayout.ts"
+  ],
+  "exclude": ["src/**/*.test.ts"]
+}
