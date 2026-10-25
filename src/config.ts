@@ -150,8 +150,9 @@ export const config = {
   },
 
   render: {
-    rightHandColor: '#4cc9f0',
-    leftHandColor: '#f9a03f',
+    /** Hand colours (DESIGN.md): brass for the right hand, violet for the left. */
+    rightHandColor: '#f5c40d',
+    leftHandColor: '#c28efb',
     /** Virtual keyboard: black key height as a fraction of white key height. */
     blackKeyHeightRatio: 0.62,
     blackKeyWidthRatio: 0.58,

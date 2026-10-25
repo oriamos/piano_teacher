@@ -8,6 +8,14 @@ uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Visual system.** PRODUCT.md and DESIGN.md record product truth and the look: warm
+  near-black ground, ivory text, brass for the primary action and the right hand, violet
+  for the left hand, the four spec feedback colours unchanged. Self-hosted Bricolage
+  Grotesque (OFL). Home screen with a continue card and an empty state that teaches; practice
+  bar as a two-row grid with Start/Stop pinned; HUD chips with a hand legend; a run summary
+  that lands as the one authored motion; count-in dot pulsing at the beat; authored SVG icons;
+  focus rings, selection, caret and scrollbars themed; `prefers-reduced-motion` respected.
+  All text pairs ≥ 5.2:1.
 - **Stage 1 – basic player.** MIDI (.mid) import with hand assignment by track or by a
   movable pitch split, fixed 4-bar segments, a song library in IndexedDB with three bundled
   public-domain starter songs, and a practice screen with falling notes on a Canvas

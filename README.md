@@ -14,15 +14,19 @@ practise it in wait mode or at a fixed tempo with per-note feedback. Works with 
 **and without one** (on-screen or computer keyboard, synth on the tablet). Neither stage has
 been verified on the real tablet and piano yet. See [Roadmap](#roadmap).
 
-![Practice screen in wait mode: falling notes coloured by hand, hit notes green, the next chord outlined, a wrong note counted](docs/screenshots/practice-wait-wrong.png)
+![Home: the song to continue with one big Practise button, then the list of songs](docs/screenshots/library.png)
+
+_Home: the song you were on, one button. Brass is the thing to do next; it is also the
+right hand's colour on the practice screen._
+
+![Practice screen in wait mode: right hand brass, left hand violet, hit notes green, the next chord outlined, a wrong note counted](docs/screenshots/practice-wait-wrong.png)
 
 _Wait mode: hit notes turn green, the chord the cursor waits on is outlined, the key to play
 is outlined on the keyboard (fade level 0)._
 
-![Practice screen in timed mode with a missed note blinking red](docs/screenshots/practice-timed.png)
+![Run summary: a large accuracy percentage, the verdict word, and the note counts](docs/screenshots/practice-summary.png)
 
-_Practice mode at 60 % tempo, right hand only. A missed note blinks red; the left hand is
-played by the piano (or the synth)._
+_After each run: the verdict lands for three seconds, then the next run starts by itself._
 
 ## How it teaches
 
@@ -192,9 +196,19 @@ Each stage ends with a pass condition checked **on the piano**, not just in code
 Out of scope by design: staff notation, audio recognition from an acoustic piano, iOS,
 gamification and rankings, AI, video lessons.
 
+## Design
+
+The look is recorded in [DESIGN.md](DESIGN.md) (tokens, type, motion, the rules) and the
+product truth it serves in [PRODUCT.md](PRODUCT.md). In short: a warm near-black ground like
+a piano case, ivory text, one brass accent for the thing to do next, violet for the left hand,
+the four feedback colours fixed by the spec. Nothing glows. The typeface is
+[Bricolage Grotesque](https://github.com/ateliertriay/bricolage) (OFL), self-hosted in
+`public/fonts/`.
+
 ## Documentation
 
 - [SPEC.md](SPEC.md) – the full specification (Hebrew)
+- [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md) – product truth and the visual system
 - [docs/architecture.md](docs/architecture.md) – layers, the MIDI event path end to end, the
   internal event format, data model
 - [docs/algorithms.md](docs/algorithms.md) – matching, scoring, adaptive tempo, hotspots,
@@ -209,5 +223,6 @@ gamification and rankings, AI, video lessons.
 ## License
 
 [MIT](LICENSE). All code and assets are original; dependencies are permissively licensed
-(MIT / Apache / BSD). No music under copyright is or will be committed to this repository:
+(MIT / Apache / BSD). The Bricolage Grotesque font in `public/fonts/` is under the SIL Open
+Font License 1.1 (see `public/fonts/OFL.txt`). No music under copyright is or will be committed to this repository:
 fixtures and seed songs are original or public domain.

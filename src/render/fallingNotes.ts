@@ -26,23 +26,24 @@ export interface FallingNotesTheme {
   text: string
 }
 
+/** Values mirror DESIGN.md. */
 export const darkFallingTheme: FallingNotesTheme = {
-  rh: '#4cc9f0',
-  lh: '#f9a03f',
-  rhBlack: '#2a9fc4',
-  lhBlack: '#c97a22',
+  rh: '#f5c40d',
+  lh: '#c28efb',
+  rhBlack: '#b38d00',
+  lhBlack: '#915dc5',
   feedback: {
-    hit: '#3ddc84',
-    precise: '#3ddc84',
-    early: '#5aa9ff',
-    late: '#ffb347',
-    wrong: '#ff5d5d',
-    missed: '#ff5d5d',
+    hit: '#3ce074',
+    precise: '#3ce074',
+    early: '#50b0ff',
+    late: '#ff822a',
+    wrong: '#fc4447',
+    missed: '#fc4447',
   },
-  playhead: 'rgba(255,255,255,0.35)',
-  barLine: 'rgba(255,255,255,0.14)',
-  beatLine: 'rgba(255,255,255,0.05)',
-  text: '#9aa0a6',
+  playhead: 'rgba(245, 238, 224, 0.45)',
+  barLine: 'rgba(245, 238, 224, 0.16)',
+  beatLine: 'rgba(245, 238, 224, 0.06)',
+  text: '#8e8479',
 }
 
 export interface FallingNotesOptions {
@@ -130,7 +131,7 @@ export function drawFallingNotes(
 
     const fb = feedback.get(n.id)
     let color: string
-    if (fb === 'missed') color = blink ? theme.feedback.missed : 'rgba(255,93,93,0.35)'
+    if (fb === 'missed') color = blink ? theme.feedback.missed : 'rgba(252, 68, 71, 0.35)'
     else if (fb) color = theme.feedback[fb]
     else
       color =
@@ -159,7 +160,7 @@ export function drawFallingNotes(
     roundRect(ctx, x, Math.max(0, top), w, Math.min(h, keyboardY - Math.max(0, top)), 3)
     ctx.fill()
     if (opts.waitingAtBeat !== null && Math.abs(n.onsetBeat - opts.waitingAtBeat) < 1e-6 && !fb) {
-      ctx.strokeStyle = '#fff'
+      ctx.strokeStyle = '#f5eee0'
       ctx.lineWidth = 2
       ctx.stroke()
     }

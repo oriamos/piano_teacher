@@ -42,6 +42,16 @@ npm run test:watch   # watch mode
 4. Only original melodies or public-domain works (Bach, Mozart, folk songs). Nothing under
    copyright, ever.
 
+## Design
+
+`DESIGN.md` is the visual system; `src/ui/styles.css` is its source of truth (the tokens in
+the front matter mirror `:root`). New UI uses the existing tokens, components and spacing
+steps. The rules worth repeating: one primary action per screen, no glow or gradients, no
+glyph icons (add a path to `src/ui/components/Icon.tsx`), every control has hover, focus,
+active and disabled states, touch targets ≥ 56 px, text contrast ≥ 4.5:1, motion respects
+`prefers-reduced-motion`. Hand and feedback colours in `src/config.ts` and the render themes
+must stay in step with DESIGN.md.
+
 ## Code style
 
 - Prettier and ESLint are the style guide; `npm run format` before committing.

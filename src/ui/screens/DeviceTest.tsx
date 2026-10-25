@@ -5,6 +5,7 @@ import { getLatencyOffset, rawNow } from '../../midi/clock'
 import { noteName } from '../../midi/messages'
 import { allNotesOff, scheduleNotes } from '../../midi/out'
 import { EventLog } from '../components/EventLog'
+import { Icon } from '../components/Icon'
 import { Keyboard } from '../components/Keyboard'
 import { Recorder } from '../components/Recorder'
 import { useCalibration } from '../hooks/useCalibration'
@@ -91,11 +92,13 @@ export function DeviceTest() {
 
   return (
     <main className="screen">
-      <header className="topbar">
-        <h1>Piano Teacher</h1>
-        <span className="muted">Stage 0 · device test</span>
-        <StatusPill status={state.status} inputLost={state.inputLost} />
-      </header>
+      <div className="screen-head">
+        <h1>Piano connection</h1>
+        <span className="muted">the stage 0 device test</span>
+        <div className="actions">
+          <StatusPill status={state.status} inputLost={state.inputLost} />
+        </div>
+      </div>
 
       {state.status === 'unsupported' && (
         <div className="banner error">
@@ -116,7 +119,7 @@ export function DeviceTest() {
         </div>
       )}
 
-      <section className="row ports">
+      <section className="ports">
         <label>
           Input
           <select
@@ -259,14 +262,14 @@ function StatusPill({ status, inputLost }: { status: string; inputLost: boolean 
       ? 'bad'
       : status === 'ready'
         ? 'good'
-        : ''
-  return <span className={`pill ${cls}`}>{text}</span>
+        : 'plain'
+  return <span className={`chip ${cls}`}>{text}</span>
 }
 
 function Check({ ok, label }: { ok: boolean; label: string }) {
   return (
     <p className={`check ${ok ? 'ok' : ''}`}>
-      <span className="box">{ok ? '✓' : ''}</span> {label}
+      <span className="box">{ok && <Icon name="check" size={16} />}</span> {label}
     </p>
   )
 }
@@ -297,7 +300,7 @@ function CalibrationSummary({
 }) {
   const enough = result.deltas.length >= Math.ceil(config.calibration.taps / 2)
   return (
-    <div className="summary">
+    <div className="summary-box">
       <p>
         {result.deltas.length} taps accepted
         {result.rejected > 0 && `, ${result.rejected} ignored as outliers`}. Mean{' '}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { config } from '../../config'
 import { midi, type MidiInputEvent } from '../../midi/access'
 import { toRecording, type TimedMessage } from '../../midi/recorder'
+import { Icon } from './Icon'
 
 /**
  * Records real device input into a fixture file for the engine's tests
@@ -53,10 +54,14 @@ export function Recorder() {
       <div className="actions">
         {recording ? (
           <button className="danger" onClick={stop}>
-            ■ Stop ({count})
+            <Icon name="stop" filled />
+            Stop ({count})
           </button>
         ) : (
-          <button onClick={start}>● Record fixture</button>
+          <button onClick={start}>
+            <Icon name="record" filled />
+            Record fixture
+          </button>
         )}
         <input
           placeholder="fixture name (e.g. bach-minuet-g-rh-bars-1-4)"
@@ -69,6 +74,7 @@ export function Recorder() {
           onChange={(e) => setDescription(e.target.value)}
         />
         <button onClick={download} disabled={recording || count === 0}>
+          <Icon name="download" />
           Download JSON
         </button>
       </div>

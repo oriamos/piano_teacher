@@ -14,13 +14,14 @@ export interface KeyboardTheme {
   label: string
 }
 
+/** Values mirror DESIGN.md. */
 export const darkKeyboardTheme: KeyboardTheme = {
-  white: '#e8e6e1',
-  black: '#1a1c22',
-  whiteBorder: '#8a8a8a',
-  pressed: '#4cc9f0',
-  pressedAlt: '#f9a03f',
-  label: '#555',
+  white: '#efebe2',
+  black: '#1b1511',
+  whiteBorder: '#8e8479',
+  pressed: '#f5c40d',
+  pressedAlt: '#c28efb',
+  label: '#8e8479',
 }
 
 export interface PressedKey {
@@ -79,7 +80,7 @@ export function drawKeyboard(
 
 /** Mix a colour with its darker self according to velocity (1..127). */
 function tint(hex: string, velocity: number): string {
-  const v = Math.max(0.35, Math.min(1, velocity / 127))
+  const v = Math.max(0.72, Math.min(1, velocity / 127))
   const [r, g, b] = hexToRgb(hex)
   return `rgb(${Math.round(r * v)}, ${Math.round(g * v)}, ${Math.round(b * v)})`
 }

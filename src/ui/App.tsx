@@ -1,3 +1,4 @@
+import { AppBar } from './components/AppBar'
 import { Library } from './screens/Library'
 import { Practice } from './screens/Practice'
 import { Settings } from './screens/Settings'
@@ -9,8 +10,18 @@ export function App() {
     case 'practice':
       return <Practice key={route.songId} songId={route.songId} />
     case 'settings':
-      return <Settings />
+      return (
+        <>
+          <AppBar current="settings" />
+          <Settings />
+        </>
+      )
     default:
-      return <Library />
+      return (
+        <>
+          <AppBar current="library" />
+          <Library />
+        </>
+      )
   }
 }

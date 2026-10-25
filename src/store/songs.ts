@@ -1,7 +1,7 @@
 /** Song library operations on top of the Dexie store. */
 import { importMidi, reassignHands } from '../content/midiImport'
 import type { Song } from '../engine/types'
-import { db, estimateDifficulty, LOCAL_USER, type SongRow } from './db'
+import { db, estimateDifficulty, getSetting, LOCAL_USER, setSetting, type SongRow } from './db'
 
 export async function listSongs(): Promise<SongRow[]> {
   return db.songs.orderBy('createdAt').reverse().toArray()
@@ -76,4 +76,16 @@ export async function addBuiltinSongs(): Promise<number> {
     added++
   }
   return added
+}
+
+const LAST_SONG_KEY = 'lastSongId'
+
+/** Remember the song that was opened last, for the home screen's continue card. */
+export async function setLastSong(id: string): Promise<void> {
+  await setSetting(LAST_SONG_KEY, id)
+}
+
+export async function getLastSong(): Promise<SongRow | undefined> {
+  const id = await getSetting<string | null>(LAST_SONG_KEY, null)
+  return id ? db.songs.get(id) : undefined
 }
