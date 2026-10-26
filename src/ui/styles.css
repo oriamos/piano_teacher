@@ -731,6 +731,55 @@ input[type='checkbox'] {
   color: var(--text);
 }
 
+/* Segment strip: the training plan, one chip per 2–4 bar segment. */
+.segments {
+  display: flex;
+  gap: 6px;
+  padding: 6px 12px;
+  overflow-x: auto;
+  background: var(--panel);
+  scrollbar-width: thin;
+}
+.segment {
+  flex: none;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px 0 8px;
+  gap: 8px;
+  border-radius: 8px;
+  background: var(--control);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.segment .n {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--control-2);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.8125rem;
+}
+.segment .range {
+  font-weight: 600;
+}
+.segment.on {
+  background: var(--brass);
+  color: var(--ink);
+}
+.segment.on .n {
+  background: var(--ink);
+  color: var(--brass);
+}
+.segment.on .diff i {
+  background: oklch(22% 0.03 70 / 0.35);
+}
+.segment.on .diff i.on {
+  background: var(--ink);
+}
+
 .stage {
   position: relative;
   flex: 1;

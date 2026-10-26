@@ -4,10 +4,11 @@ import type { SongRow } from '../../store/db'
 import {
   addBuiltinSongs,
   getLastSong,
-  importMidiFile,
+  importSongFileFromDisk,
   listSongs,
   removeSong,
 } from '../../store/songs'
+import { ACCEPTED_EXTENSIONS } from '../../content/importFile'
 import { Icon } from '../components/Icon'
 import { navigate } from '../router'
 
@@ -56,7 +57,7 @@ export function Library() {
   const onFiles = (files: FileList | null) => {
     if (!files?.length) return
     void run(async () => {
-      for (const f of Array.from(files)) await importMidiFile(f)
+      for (const f of Array.from(files)) await importSongFileFromDisk(f)
     })
   }
 
@@ -67,7 +68,12 @@ export function Library() {
       <input
         ref={fileInput}
         type="file"
-        accept=".mid,.midi,audio/midi"
+        accept={[
+          ...ACCEPTED_EXTENSIONS,
+          'audio/midi',
+          'application/vnd.recordare.musicxml+xml',
+          'application/vnd.recordare.musicxml',
+        ].join(',')}
         multiple
         hidden
         onChange={(e) => onFiles(e.target.files)}
@@ -99,7 +105,7 @@ export function Library() {
               Add the starter songs
             </button>
             <button disabled={busy} onClick={() => fileInput.current?.click()}>
-              Import .mid
+              Import sheet music
             </button>
           </div>
         </section>
@@ -124,7 +130,7 @@ export function Library() {
             <h2>All songs</h2>
             <div className="actions">
               <button className="small" disabled={busy} onClick={() => fileInput.current?.click()}>
-                Import .mid
+                Import sheet music
               </button>
               <button
                 className="small quiet"
@@ -184,7 +190,10 @@ function SongMeta({ song, difficulty }: { song: Song; difficulty: number }) {
           <i key={i} className={i < Math.ceil(difficulty / 2) ? 'on' : ''} />
         ))}
       </span>
-      <span>{song.hands.method === 'track' ? 'two tracks' : 'split by pitch'}</span>
+      <span>
+        {song.segments.length} {song.segments.length === 1 ? 'segment' : 'segments'}
+      </span>
+      <span>{song.hands.method === 'track' ? 'two staves' : 'split by pitch'}</span>
     </>
   )
 }

@@ -175,10 +175,10 @@ and input notes are echoed to the synth so the on-screen keyboard is audible.
 
 ## Current state
 
-Implemented: `src/midi`, `src/audio`, `src/content` (MIDI import, hands, fixed 4-bar
-segments), `src/engine` (types, time, groups, wait/timed matchers, scoring, practice
+Implemented: `src/midi`, `src/audio`, `src/content` (MIDI and MusicXML import, hands,
+density segmentation with per-segment difficulty), `src/engine` (types, time, groups, wait/timed matchers, scoring, practice
 session), `src/render` (keyboard, falling notes with fade levels), `src/store` (songs,
-settings), `src/ui` (library, practice, settings with the device test). Not yet: MusicXML,
-density-based segmentation, the stage machine / adaptive tempo / hotspots / SRS / session
+settings), `src/ui` (library, practice, settings with the device test). Not yet: manual editing of
+segment boundaries, repeat expansion in MusicXML, the stage machine / adaptive tempo / hotspots / SRS / session
 builder (stage 2–3), progress tables, sync (stage 4). The latency offset still lives in
 `localStorage`; it moves to the settings table with the stage 2 store work.

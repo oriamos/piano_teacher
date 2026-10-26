@@ -8,6 +8,13 @@ uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Sheet music import.** MusicXML (`.musicxml`, `.xml`, compressed `.mxl`) joins MIDI:
+  parts and staves (staff 1 right hand, staff 2 left), divisions, backup/forward and voices,
+  chords, ties, tuplets, pickup bars, transposing parts, tempo from metronome marks. PDFs
+  and photos are refused with the conversion path (MuseScore or Audiveris → MusicXML).
+- **Training built from the notes.** Density-based 2–4 bar segmentation that cuts at phrase
+  ends, a 1–10 difficulty per segment from density, chords and leaps, and a segment strip on
+  the practice screen; the loop opens on segment 1. Applies to MIDI imports too.
 - **Visual system.** PRODUCT.md and DESIGN.md record product truth and the look: warm
   near-black ground, ivory text, brass for the primary action and the right hand, violet
   for the left hand, the four spec feedback colours unchanged. Self-hosted Bricolage

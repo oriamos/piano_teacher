@@ -1,5 +1,7 @@
 /** Song library operations on top of the Dexie store. */
-import { importMidi, reassignHands } from '../content/midiImport'
+import { importSongFile } from '../content/importFile'
+import { reassignHands } from '../content/midiImport'
+import { importMidi } from '../content/midiImport'
 import type { Song } from '../engine/types'
 import { db, estimateDifficulty, getSetting, LOCAL_USER, setSetting, type SongRow } from './db'
 
@@ -15,12 +17,14 @@ export async function removeSong(id: string): Promise<void> {
   await db.songs.delete(id)
 }
 
-/** Import a .mid file picked by the user. Returns the stored row. */
-export async function importMidiFile(file: File): Promise<SongRow> {
+/**
+ * Import a file picked by the user: .mid / .midi, .musicxml / .xml, or .mxl.
+ * Throws a readable message for PDFs and images (see content/importFile.ts).
+ */
+export async function importSongFileFromDisk(file: File): Promise<SongRow> {
   const buf = await file.arrayBuffer()
-  const title = file.name.replace(/\.(mid|midi)$/i, '')
-  const song = importMidi(buf)
-  return storeSong(buf, song.title === 'Untitled' ? { ...song, title } : song, 'midi')
+  const { song, sourceType } = importSongFile(file.name, buf)
+  return storeSong(buf, song, sourceType)
 }
 
 async function storeSong(

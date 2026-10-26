@@ -69,8 +69,30 @@ npm install
 npm run dev          # http://localhost:5173  (also reachable on the LAN via --host)
 ```
 
-Open it in desktop Chrome or Edge. Press **Add starter songs** in the library (three
+Open it in desktop Chrome or Edge. Press **Add the starter songs** in the library (three
 public-domain tunes ship with the app), open one and press **Start**.
+
+### Bringing your own sheet music
+
+**Import sheet music** accepts:
+
+| File                        | Source                                                                                                                                                                                                    |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.musicxml`, `.xml`, `.mxl` | Notation: MuseScore (File → Export), Sibelius, Finale, Dorico, and most OMR tools. Staff 1 becomes the right hand, staff 2 the left. Ties, chords, voices, tuplets, pickup bars and tempo marks are read. |
+| `.mid`, `.midi`             | Any MIDI file. Hands by track name or pitch, with a movable split point.                                                                                                                                  |
+
+A **PDF or photo of a score** is a picture, not notes. Run it through optical music
+recognition first: in [MuseScore](https://musescore.org) use _File → Import PDF_ (free, uses
+Audiveris in the cloud), or install [Audiveris](https://audiveris.github.io/audiveris/) and
+open the PDF there. Check the result against the page, export MusicXML, import that. The app
+says exactly this if you try to import a PDF.
+
+From the notes the app builds the training: it splits the piece into 2–4 bar **segments** by
+note density (cutting at phrase ends when it has to cut early), rates each segment's
+difficulty from density, chords and leaps, and opens the practice screen on segment 1. The
+segment strip above the notes is the plan; tap a segment to loop it. The per-segment stage
+sequence (listen → right → left → both → memory) and automatic progression arrive with
+stage 2.
 
 ### Two modes: with a piano, without one
 
@@ -164,7 +186,8 @@ src/
   audio/      the Instrument interface: piano over MIDI out, or the Web Audio synth
   engine/     pure TypeScript, no DOM: grouping, wait/timed matching, scoring, the practice
               session controller (stage 2 adds the stage machine, tempo, hotspots, SRS)
-  content/    MIDI parsing → internal event format, hand assignment, segmentation
+  content/    MIDI and MusicXML (.mxl) parsing → internal event format, hands, segmentation,
+              difficulty
   render/     Canvas: virtual keyboard, falling notes, fade levels
   ui/         React screens (library, practice, settings) and the browser adapter
   store/      Dexie / IndexedDB: songs, settings (progress and the sync queue come later)

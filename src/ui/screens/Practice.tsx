@@ -47,7 +47,10 @@ function Player({ row, onRowChange }: { row: SongRow; onRowChange: (r: SongRow) 
   const [mode, setMode] = useState<Mode>('wait')
   const [hand, setHand] = useState<HandSelection>('BOTH')
   const [tempoPct, setTempoPct] = useState<number>(config.tempo.startPct)
-  const [loopBars, setLoopBars] = useState<[number, number]>([1, Math.min(4, bars(song))])
+  const [loopBars, setLoopBars] = useState<[number, number]>(() => {
+    const first = song.segments[0]
+    return first ? segBars(first, song) : [1, Math.min(4, bars(song))]
+  })
   const [metronome, setMetronome] = useState(false)
   const [fadeLevel, setFadeLevel] = useState(0)
   const io = useIo()
@@ -204,6 +207,28 @@ function Player({ row, onRowChange }: { row: SongRow; onRowChange: (r: SongRow) 
         </div>
       </header>
 
+      <nav className="segments" aria-label="Segments">
+        {song.segments.map((seg) => {
+          const [a, b] = segBars(seg, song)
+          const on = a === loopBars[0] && b === loopBars[1]
+          return (
+            <button
+              key={seg.id}
+              className={`segment ${on ? 'on' : ''}`}
+              onClick={() => change(setLoopBars)([a, b])}
+              aria-pressed={on}
+              title={`Bars ${a}–${b}${seg.difficulty ? ` · difficulty ${seg.difficulty} of 10` : ''}`}
+            >
+              <span className="n">{seg.index + 1}</span>
+              <span className="range">
+                {a}–{b}
+              </span>
+              {seg.difficulty !== undefined && <Diff level={seg.difficulty} />}
+            </button>
+          )
+        })}
+      </nav>
+
       <div className="stage">
         <PracticeCanvas
           song={song}
@@ -291,6 +316,21 @@ function splitOf(song: Song): number {
 }
 function bars(song: Song): number {
   return Math.ceil(song.totalBeats / song.beatsPerBar)
+}
+function segBars(seg: { startBeat: number; endBeat: number }, song: Song): [number, number] {
+  return [
+    Math.floor(seg.startBeat / song.beatsPerBar) + 1,
+    Math.ceil(seg.endBeat / song.beatsPerBar),
+  ]
+}
+function Diff({ level }: { level: number }) {
+  return (
+    <span className="diff" aria-hidden="true">
+      {Array.from({ length: 5 }, (_, i) => (
+        <i key={i} className={i < Math.ceil(level / 2) ? 'on' : ''} />
+      ))}
+    </span>
+  )
 }
 function clamp(n: number, lo: number, hi: number): number {
   return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : lo

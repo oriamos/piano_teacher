@@ -165,7 +165,27 @@ from the segment's length in beats, its tempo, and the number of runs it typical
 pass a stage (initially a fixed guess, later from the user's own attempt history). If reviews
 alone would exceed their share, the oldest due ones go first and the rest wait for tomorrow.
 
-## 8. Latency calibration (stage 0, `src/midi/calibration.ts`)
+## 8. Segmentation and difficulty (`src/content/segmentation.ts`)
+
+Segments are `segmentation.minBars`–`segmentation.maxBars` (2–4) bars. Starting at each
+segment's first bar, bars are added until either `maxBars` is reached or the running note
+count (both hands) reaches `segmentation.targetNotes` (28). When density forced the cut and
+the cut lands mid-phrase, it moves back to the last bar boundary that follows a rest or a long
+melody note (`segmentation.phraseRestBeats` = 1 beat without a right-hand onset before the
+bar line). A tail shorter than `minBars` is absorbed into the previous segment.
+
+Difficulty per segment, 1–10:
+
+```
+raw = 1 + density · densityWeight + chords · chordWeight + (leaps / beats) · leapWeight · 10
+```
+
+with density = notes per beat, chords = onsets with two or more notes in one hand, leaps =
+consecutive same-hand onsets whose top notes are ≥ `difficulty.leapSemitones` (7) apart.
+Weights in `config.difficulty`. Rounded and clamped. This is a first estimate; after the engine
+has real per-segment attempt data (stage 2) the weights get fitted to observed time-to-clean.
+
+## 9. Latency calibration (stage 0, `src/midi/calibration.ts`)
 
 Not in the spec's algorithms chapter but worth recording. The piano clicks a metronome at
 `calibration.bpm` (80) over MIDI out: `calibration.countInBeats` (4) count-in beats, then

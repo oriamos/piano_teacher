@@ -34,6 +34,8 @@ export interface Segment {
   index: number
   startBeat: number
   endBeat: number
+  /** 1–10, from density, chords and leaps (content/segmentation.ts). */
+  difficulty?: number
   /** Ids of the segments this one was stitched from (stage 2). */
   parentIds?: string[]
 }

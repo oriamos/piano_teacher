@@ -5,14 +5,14 @@
 import { Midi } from '@tonejs/midi'
 import type { ExpectedNote, Song, TrackInfo } from '../engine/types'
 import { chooseHandAssignment, handOf } from './hands'
-import { segmentByBars, segmentAt } from './segments'
+import { segmentAt } from './segments'
+import { segmentByDensity } from './segmentation'
 
 export interface ImportOptions {
   id?: string
   title?: string
   /** Override the automatic hand assignment. */
   splitPitch?: number
-  barsPerSegment?: number
 }
 
 /**
@@ -63,7 +63,11 @@ export function importMidi(data: ArrayLike<number> | ArrayBuffer, opts: ImportOp
 
   const lastEnd = raw.reduce((m, n) => Math.max(m, n.onsetBeat + n.durBeats), 0)
   const totalBeats = Math.ceil(lastEnd / beatsPerBar) * beatsPerBar || beatsPerBar
-  const segments = segmentByBars(totalBeats, beatsPerBar, opts.barsPerSegment ?? 4)
+  const segments = segmentByDensity(
+    raw.map((n, i) => ({ ...n, id: `n${i}`, segmentId: '' })),
+    totalBeats,
+    beatsPerBar,
+  )
 
   const notes: ExpectedNote[] = raw.map((n, i) => ({
     ...n,

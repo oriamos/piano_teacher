@@ -61,6 +61,25 @@ export const config = {
     },
   },
 
+  segmentation: {
+    /** Segments are this many bars long (spec: 2–4), cut earlier when dense. */
+    minBars: 2,
+    maxBars: 4,
+    /** Cut a segment once it holds about this many notes (both hands). */
+    targetNotes: 28,
+    /** Prefer a cut at a bar whose first beat starts after a rest or a long note in the melody. */
+    phraseRestBeats: 1,
+  },
+
+  difficulty: {
+    /** Weights for the per-segment difficulty estimate (notes per beat, chords, leaps). */
+    densityWeight: 2.5,
+    chordWeight: 0.08,
+    leapWeight: 0.25,
+    /** A leap counts from this many semitones between consecutive notes of one hand. */
+    leapSemitones: 7,
+  },
+
   hotspots: {
     /** Exponential decay for per-note error rate. Higher = recent history weighs more. */
     alpha: 0.3,
